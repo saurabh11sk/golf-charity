@@ -51,6 +51,51 @@
 //   );
 // }
 
+// 'use client';
+
+// import { supabase } from '@/lib/supabaseClient';
+// import { useRouter } from 'next/navigation';
+
+// export default function Dashboard() {
+//   const router = useRouter();
+
+//   const handleLogout = async () => {
+//     await supabase.auth.signOut();
+//     router.push('/auth/login');
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-100 p-10">
+//       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+
+//       <button
+//         onClick={handleLogout}
+//         className="bg-red-500 text-white px-4 py-2 rounded mb-6"
+//       >
+//         Logout
+//       </button>
+
+//       <div className="grid grid-cols-2 gap-4">
+//         <a href="/dashboard/scores" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+//           📊 Scores
+//         </a>
+
+//         <a href="/admin/draw" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+//           🎯 Draw Panel
+//         </a>
+
+//         <a href="/dashboard/charity" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+//           ❤️ Charity
+//         </a>
+
+//         <a href="/dashboard/result" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+//           🏆 Results
+//         </a>
+//       </div>
+//     </div>
+//   );
+// }
+
 'use client';
 
 import { supabase } from '@/lib/supabaseClient';
@@ -65,7 +110,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
+    <div className="min-h-screen bg-gray-100 p-10 text-black">
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
       <button
@@ -76,19 +121,19 @@ export default function Dashboard() {
       </button>
 
       <div className="grid grid-cols-2 gap-4">
-        <a href="/dashboard/scores" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+        <a href="/dashboard/scores" className="bg-white text-black p-4 rounded shadow hover:bg-gray-200">
           📊 Scores
         </a>
 
-        <a href="/admin/draw" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+        <a href="/admin/draw" className="bg-white text-black p-4 rounded shadow hover:bg-gray-200">
           🎯 Draw Panel
         </a>
 
-        <a href="/dashboard/charity" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+        <a href="/dashboard/charity" className="bg-white text-black p-4 rounded shadow hover:bg-gray-200">
           ❤️ Charity
         </a>
 
-        <a href="/dashboard/result" className="bg-white p-4 rounded shadow hover:bg-gray-50">
+        <a href="/dashboard/result" className="bg-white text-black p-4 rounded shadow hover:bg-gray-200">
           🏆 Results
         </a>
       </div>
