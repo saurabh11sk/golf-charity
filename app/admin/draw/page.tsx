@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import {useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function DrawPage() {
@@ -32,6 +32,30 @@ export default function DrawPage() {
     setLoading(false);
     alert('Draw saved!');
   };
+  const [profile, setProfile] = useState<any>(null);
+    useEffect(() => {
+      const checkAdmin = async () => {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) return;
+
+        const { data } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        setProfile(data);
+      };
+
+      checkAdmin();
+    }, []);
+
+    if (profile && profile.role !== "admin") {
+      return <div className="p-6 text-red-500">Access Denied</div>;
+    }
 
   return (
     <div className="p-10">
