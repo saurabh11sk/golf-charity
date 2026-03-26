@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,11 +9,13 @@ export default function WinnersPage() {
   const [profile, setProfile] = useState<any>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // ✅ Fetch winners
   const fetchWinners = async () => {
     const { data } = await supabase.from("winners").select("*");
     setWinners(data || []);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -45,13 +48,22 @@ export default function WinnersPage() {
     return <div className="p-6 text-red-500">Access Denied</div>;
   }
 
-  // ✅ Update status with feedback
+  // ⏳ Loading state
+  if (loading) {
+    return <div className="p-6">Loading winners...</div>;
+  }
+
+  // ✅ Update status
   const updateStatus = async (id: string, status: string) => {
     setLoadingId(id);
 
     await supabase.from("winners").update({ status }).eq("id", id);
 
-    setMessage(`Winner ${status.toUpperCase()} ✅`);
+    setMessage(
+      status === "approved"
+        ? "Winner Approved ✅"
+        : "Winner Rejected ❌"
+    );
 
     await fetchWinners();
     setLoadingId(null);
@@ -65,42 +77,52 @@ export default function WinnersPage() {
 
       {/* ✅ Feedback message */}
       {message && (
-        <div className="mb-4 p-3 bg-green-200 text-green-800 rounded">
+        <div
+          className={`mb-4 p-3 rounded ${
+            message.includes("Approved")
+              ? "bg-green-200 text-green-800"
+              : "bg-red-200 text-red-800"
+          }`}
+        >
           {message}
         </div>
       )}
 
+      {/* ❌ Empty state */}
+      {winners.length === 0 && (
+        <div className="text-gray-500">No winners found</div>
+      )}
+
       {winners.map((w) => (
         <div
-            key={w.id}
-            className={`p-4 mb-4 rounded shadow ${
-                w.status === "approved"
-                ? "bg-green-100 border border-green-400 text-green-900"
-                : w.status === "rejected"
-                ? "bg-red-100 border border-red-400 text-red-900"
-                : "bg-white text-black border"
-            }`}
-            >
-                    
+          key={w.id}
+          className={`p-4 mb-4 rounded shadow ${
+            w.status === "approved"
+              ? "bg-green-100 border border-green-400 text-green-900"
+              : w.status === "rejected"
+              ? "bg-red-100 border border-red-400 text-red-900"
+              : "bg-white text-black border"
+          }`}
+        >
           <p><strong>User:</strong> {w.user_id}</p>
-          <p><strong>Score:</strong> {w.score}</p>
+          <p><strong>Score:</strong> {w.score || "N/A"}</p>
 
           {w.proof_image && (
             <img
               src={w.proof_image}
               alt="proof"
-              className="w-40 mb-2"
+              className="w-40 mb-2 rounded"
             />
           )}
 
           <p>
             <strong>Status:</strong>{" "}
             <span className="font-bold uppercase">{w.status}</span>
-            </p>
+          </p>
 
           <button
             onClick={() => updateStatus(w.id, "approved")}
-            className="bg-green-500 text-white px-3 py-1 mr-2"
+            className="bg-green-500 text-white px-3 py-1 mr-2 rounded"
             disabled={loadingId === w.id}
           >
             {loadingId === w.id ? "Processing..." : "Approve"}
@@ -108,7 +130,7 @@ export default function WinnersPage() {
 
           <button
             onClick={() => updateStatus(w.id, "rejected")}
-            className="bg-red-500 text-white px-3 py-1"
+            className="bg-red-500 text-white px-3 py-1 rounded"
             disabled={loadingId === w.id}
           >
             {loadingId === w.id ? "Processing..." : "Reject"}
