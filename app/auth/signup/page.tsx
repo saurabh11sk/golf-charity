@@ -55,6 +55,13 @@ export default function Signup() {
       <button onClick={handleSignup} className="mt-4 bg-black text-white p-2">
         Signup
       </button>
+      <p className="mt-4">
+        Already have an account?{' '}
+        <a href="/auth/login" className="text-blue-500">
+          Login
+        </a>
+      </p>
+
     </div>
   );
 }

@@ -39,6 +39,12 @@ export default function Login() {
       <button onClick={handleLogin} className="mt-4 bg-black text-white p-2">
         Login
       </button>
+      <p className="mt-4">
+        Don't have an account?{' '}
+        <a href="/auth/signup" className="text-blue-500">
+          Signup
+        </a>
+      </p>
     </div>
   );
 }
